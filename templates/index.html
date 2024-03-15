@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrowGPT</title>
+</head>
+<body>
+
+    <input type="text" id="prompt">
+    <button onclick="AskKrowGPT()">Ask KrowGPT</button>
+
+    <script>
+        function AskKrowGPT(){
+            
+            var prompt = document.getElementById("prompt").value;
+            const data = { "model": "mistral", "prompt": prompt };
+            fetch('http://127.0.0.1:11434/api/generate', {
+                method: 'POST', // or 'POST'
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then((response) => response.text())
+            .then((textData) => { 
+                const dataArray = textData.split('\n');
+                document.getElementById("response").innerText = ""
+                dataArray.forEach(element => {
+                    document.getElementById("response").innerText += JSON.parse(element)["response"];
+                });
+            })
+        }
+        
+    </script>
+    <div id="response"></div>
+</body>
+</html>
